@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Borsa · Döviz · Maden Ekranı</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #001f3f, #004080);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .container {
+      display: flex;
+      width: 95%;
+      max-width: 1400px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      animation: slideIn 1.3s ease;
+    }
+
+    @keyframes slideIn {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .section {
+      flex: 1;
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      transition: 0.4s;
+    }
+
+    .section:hover {
+      background: rgba(255,255,255,0.05);
+      transform: scale(1.02);
+    }
+
+    .section:last-child {
+      border-right: none;
+    }
+
+    .section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #00d1ff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 15px;
+    }
+
+    tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .up {
+      color: #00ff88;
+      font-weight: bold;
+    }
+
+    .down {
+      color: #ff4444;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 13px;
+      color: #bbb;
+      background: rgba(0, 0, 0, 0.4);
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .updated {
+      animation: blink 0.5s ease-in-out;
+    }
+
+    @media(max-width: 1000px){
+      .container { flex-direction: column; }
+      .section { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .section:last-child { border-bottom: none; }
+    }
+
+    /* Grafik kutusu */
+    .chart-container {
+      max-width: 1400px;
+      width: 95%;
+      background: rgba(0, 0, 0, 0.55);
+      border-radius: 15px;
+      margin-top: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      animation: fadeIn 1.5s ease;
+    }
+
+    .chart-container h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #00d1ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Borsa -->
+    <div class="section">
+      <h2>📈 Borsa Verileri</h2>
+      <table id="borsaTable">
+        <thead>
+          <tr>
+            <th>Hisse</th>
+            <th>Fiyat (₺)</th>
+            <th>Değişim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>BIST 100</td><td>8950.35</td><td class="up">+0.52%</td></tr>
+          <tr><td>ASELS</td><td>37.80</td><td class="down">-0.23%</td></tr>
+          <tr><td>THYAO</td><td>281.20</td><td class="up">+1.05%</td></tr>
+          <tr><td>GARAN</td><td>64.10</td><td class="up">+0.31%</td></tr>
+          <tr><td>KRDMD</td><td>16.75</td><td class="down">-0.18%</td></tr>
+          <tr><td>EREGL</td><td>47.60</td><td class="up">+0.42%</td></tr>
+          <tr><td>FROTO</td><td>1045.10</td><td class="up">+0.80%</td></tr>
+          <tr><td>SISE</td><td>57.50</td><td class="down">-0.10%</td></tr>
+          <tr><td>VESTL</td><td>45.30</td><td class="up">+0.65%</td></tr>
+          <tr><td>TCELL</td><td>65.20</td><td class="up">+0.27%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Döviz -->
+    <div class="section">
+      <h2>💱 Döviz Kurları</h2>
+      <table id="dovizTable">
+        <thead>
+          <tr>
+            <th>Döviz</th>
+            <th>Fiyat (₺)</th>
+            <th>Değişim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>USD / TRY</td><td>33.40</td><td class="up">+0.12%</td></tr>
+          <tr><td>EUR / TRY</td><td>35.90</td><td class="down">-0.05%</td></tr>
+          <tr><td>GBP / TRY</td><td>41.20</td><td class="up">+0.20%</td></tr>
+          <tr><td>JPY / TRY</td><td>0.22</td><td class="up">+0.03%</td></tr>
+          <tr><td>CHF / TRY</td><td>37.05</td><td class="down">-0.10%</td></tr>
+          <tr><td>CAD / TRY</td><td>24.80</td><td class="up">+0.15%</td></tr>
+          <tr><td>AUD / TRY</td><td>21.50</td><td class="down">-0.07%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Maden -->
+    <div class="section">
+      <h2>⛏️ Maden & Emtia</h2>
+      <table id="madenTable">
+        <thead>
+          <tr>
+            <th>Maden</th>
+            <th>Fiyat</th>
+            <th>Değişim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Altın (ONS)</td><td>2370.50</td><td class="up">+0.32%</td></tr>
+          <tr><td>Gram Altın</td><td>2510.10</td><td class="up">+0.18%</td></tr>
+          <tr><td>Gümüş (ONS)</td><td>28.45</td><td class="down">-0.25%</td></tr>
+          <tr><td>Platin</td><td>950.60</td><td class="up">+0.41%</td></tr>
+          <tr><td>Paladyum</td><td>1025.30</td><td class="down">-0.12%</td></tr>
+          <tr><td>Bakır</td><td>4.20</td><td class="up">+0.05%</td></tr>
+          <tr><td>Petrol (Brent)</td><td>85.30</td><td class="down">-0.15%</td></tr>
+          <tr><td>Doğalgaz</td><td>3.45</td><td class="up">+0.11%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 📊 Grafik -->
+  <div class="chart-container">
+    <h3>📉 BIST 100 Canlı Grafik</h3>
+    <canvas id="borsaChart"></canvas>
+  </div>
+
+  <div class="footer">
+    Veriler demo amaçlıdır. Gerçek zamanlı değildir. ⏳ | Borsa · Döviz · Maden
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // Rastgele fiyat oynatma
+    function randomChange(value) {
+      let change = (Math.random() * 0.5 - 0.25).toFixed(2);
+      let newValue = (parseFloat(value) + parseFloat(change)).toFixed(2);
+      let percent = (change / value * 100).toFixed(2);
+      return { price: newValue, change: change >= 0 ? `+${percent}%` : `${percent}%`, up: change >= 0 };
+    }
+
+    function updateTable(tableId) {
+      const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+      rows.forEach(row => {
+        const priceCell = row.cells[1];
+        const changeCell = row.cells[2];
+        const oldValue = priceCell.textContent;
+        const newData = randomChange(oldValue);
+        priceCell.textContent = newData.price;
+        changeCell.textContent = newData.change;
+        changeCell.className = newData.up ? 'up updated' : 'down updated';
+        setTimeout(() => changeCell.classList.remove('updated'), 600);
+      });
+    }
+
+    setInterval(() => {
+      updateTable('borsaTable');
+      updateTable('dovizTable');
+      updateTable('madenTable');
+
+      // Grafik veri güncelleme
+      const newPrice = parseFloat(document.querySelector("#borsaTable tbody tr td:nth-child(2)").textContent);
+      chartData.labels.push(new Date().toLocaleTimeString());
+      chartData.datasets[0].data.push(newPrice);
+      if (chartData.labels.length > 10) {
+        chartData.labels.shift();
+        chartData.datasets[0].data.shift();
+      }
+      borsaChart.update();
+    }, 3000);
+
+    // Chart.js grafik
+    const ctx = document.getElementById('borsaChart').getContext('2d');
+    const chartData = {
+      labels: [],
+      datasets: [{
+        label: 'BIST 100',
+        data: [],
+        borderColor: '#00ff88',
+        backgroundColor: 'rgba(0, 255, 136, 0.2)',
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: '#00ff88',
+      }]
+    };
+
+    const borsaChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          },
+          y: {
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          }
+        },
+        plugins: {
+          legend: { labels: { color: '#fff' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
